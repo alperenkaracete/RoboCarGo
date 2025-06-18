@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,21 +10,30 @@ public class Driver : MonoBehaviour
 
     [SerializeField] float speedUp = 20f; /*Speed up buff*/
     [SerializeField] float slowDown= 20f; /*Slow down nerf*/
+    private bool isGameOver = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.Instance.GameIsOver += GameIsOver;
+    }
+
+    private void GameIsOver()
+    {
+        isGameOver = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime; /*Rotation speed with frame*/
-        float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime; /*Movement speed with frame*/
+        if (!isGameOver)
+        {
+            float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime; /*Rotation speed with frame*/
+            float moveAmount = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime; /*Movement speed with frame*/
 
-        transform.Rotate(0,0,-steerAmount); /*Rotate car*/
-        transform.Translate(0,moveAmount,0); /*Move car*/
+            transform.Rotate(0, 0, -steerAmount); /*Rotate car*/
+            transform.Translate(0, moveAmount, 0); /*Move car*/
+        }
 
     }
 
